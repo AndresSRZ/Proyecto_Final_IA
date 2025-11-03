@@ -1,31 +1,25 @@
 # ==== Librerías base del proyecto ====
 
-# 1. Crear la aplicación web (interfaz)
+# 1. Streamlit y dependencias base
 streamlit==1.39.0
 
-# 2. Reconocimiento Óptico de Caracteres (OCR)
+# 2. OCR (EasyOCR depende de Torch y Pillow)
 easyocr==1.7.1
-opencv-python-headless==4.10.0.84  # evita conflictos en entornos sin GUI
-pillow==10.3.0  # soporte de imágenes
+opencv-python-headless==4.10.0.84
+pillow==10.2.0        # ⚙️ estable con Python 3.13
+torch==2.3.1          # ⚙️ compatible con EasyOCR y Streamlit Cloud
+torchvision==0.18.1   # necesaria para algunos modelos OCR
 
-# 3. Conexión con API de GROQ
-groq==0.4.2  # cliente oficial de Groq para Python
-requests==2.32.3  # para llamadas HTTP adicionales
+# 3. APIs externas
+groq==0.4.2
+huggingface-hub==0.25.2
+requests==2.32.3
 
-# 4. Conexión con la API de Hugging Face
-huggingface-hub==0.24.6  # cliente oficial de inferencia
-
-# 5. Cargar variables de entorno desde .env
+# 4. Cargar variables de entorno
 python-dotenv==1.0.1
 
-# ==== Opcional pero recomendado ====
-# Control de caché y tipado
+# 5. Utilidades
 cachetools==5.4.0
 typing-extensions==4.12.2
-
-# Manejo de errores y logs
 rich==13.9.1
-
-# Compatibilidad general
 numpy==1.26.4
-torch==2.4.1  # requerido por EasyOCR
