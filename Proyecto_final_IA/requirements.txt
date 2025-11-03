@@ -1,0 +1,31 @@
+# ==== Librerías base del proyecto ====
+
+# 1. Crear la aplicación web (interfaz)
+streamlit==1.39.0
+
+# 2. Reconocimiento Óptico de Caracteres (OCR)
+easyocr==1.7.1
+opencv-python-headless==4.10.0.84  # evita conflictos en entornos sin GUI
+pillow==10.3.0  # soporte de imágenes
+
+# 3. Conexión con API de GROQ
+groq==0.4.2  # cliente oficial de Groq para Python
+requests==2.32.3  # para llamadas HTTP adicionales
+
+# 4. Conexión con la API de Hugging Face
+huggingface-hub==0.24.6  # cliente oficial de inferencia
+
+# 5. Cargar variables de entorno desde .env
+python-dotenv==1.0.1
+
+# ==== Opcional pero recomendado ====
+# Control de caché y tipado
+cachetools==5.4.0
+typing-extensions==4.12.2
+
+# Manejo de errores y logs
+rich==13.9.1
+
+# Compatibilidad general
+numpy==1.26.4
+torch==2.4.1  # requerido por EasyOCR
