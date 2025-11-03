@@ -143,6 +143,7 @@ if st.button("🧠 Analizar texto"):
             else:
                 try:
                     from groq import Groq
+                    
                     client = Groq(api_key=GROQ_API_KEY)
 
                     if task == "Resumir en 3 puntos clave":
