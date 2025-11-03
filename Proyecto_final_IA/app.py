@@ -174,7 +174,7 @@ if st.button("🧠 Analizar texto"):
                         st.session_state["last_llm_answer"] = answer
                 except Exception as e:
                     st.error(f"❌ Error al llamar a GROQ: {str(e)}")
-                    st.info("Asegúrate de que GROQ_API_KEY es válida en los Secrets.")
+                    st.info("Verifica que GROQ_API_KEY sea válida en los Secrets.")
 
         # ========== HUGGING FACE ==========
         else:
