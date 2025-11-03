@@ -1,24 +1,13 @@
-# ==== Librerías base del proyecto ====
-
-# 1. Streamlit y dependencias base
 streamlit==1.39.0
-
-# 2. OCR (EasyOCR depende de Torch y Pillow)
 easyocr==1.7.1
 opencv-python-headless==4.10.0.84
-pillow==10.2.0        # ⚙️ estable con Python 3.13
-torch==2.3.1          # ⚙️ compatible con EasyOCR y Streamlit Cloud
-torchvision==0.18.1   # necesaria para algunos modelos OCR
-
-# 3. APIs externas
+pillow==10.2.0
+torch==2.3.1
+torchvision==0.18.1
 groq==0.4.2
 huggingface-hub==0.25.2
 requests==2.32.3
-
-# 4. Cargar variables de entorno
 python-dotenv==1.0.1
-
-# 5. Utilidades
 cachetools==5.4.0
 typing-extensions==4.12.2
 rich==13.9.1
