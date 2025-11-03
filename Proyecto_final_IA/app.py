@@ -9,11 +9,19 @@ import requests
 import json
 
 # =======================
-# CARGAR .env
+# CARGAR VARIABLES DE ENTORNO
 # =======================
 load_dotenv()
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-HF_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+
+def get_secret(key: str):
+    """Get secret from st.secrets (Streamlit Cloud) or os.getenv (local)"""
+    try:
+        return st.secrets[key]
+    except (FileNotFoundError, KeyError):
+        return os.getenv(key)
+
+GROQ_API_KEY = get_secret("GROQ_API_KEY")
+HF_API_KEY = get_secret("HUGGINGFACE_API_KEY")
 
 # =======================
 # CONFIG PAGINA
@@ -131,26 +139,26 @@ if st.button("🧠 Analizar texto"):
         # ========== GROQ ==========
         if provider == "GROQ":
             if not GROQ_API_KEY:
-                st.error("No hay GROQ_API_KEY en el .env")
+                st.error("❌ No se encontro GROQ_API_KEY. Verifica que este configurada en Secrets.")
             else:
-                from groq import Groq
-                client = Groq(api_key=GROQ_API_KEY)
+                try:
+                    from groq import Groq
+                    client = Groq(api_key=GROQ_API_KEY)
 
-                if task == "Resumir en 3 puntos clave":
-                    system_msg = "Eres un asistente que resume textos en espanol en exactamente 3 viñetas claras."
-                    user_msg = f"Resume el siguiente texto en 3 puntos clave:\n\n{ocr_text}"
-                elif task == "Traducir al ingles":
-                    system_msg = "Eres un traductor profesional de espanol a ingles. Mantienes el sentido y el tono."
-                    user_msg = f"Traduce al ingles el siguiente texto:\n\n{ocr_text}"
-                elif task == "Identificar las entidades principales":
-                    system_msg = "Eres un extractor de informacion. Devuelves personas, lugares, organizaciones y fechas en formato de lista."
-                    user_msg = f"Extrae las entidades principales del siguiente texto:\n\n{ocr_text}"
-                else:
-                    system_msg = "Eres un profesor que explica textos en espanol usando lenguaje sencillo."
-                    user_msg = f"Explica en terminos sencillos el siguiente texto:\n\n{ocr_text}"
+                    if task == "Resumir en 3 puntos clave":
+                        system_msg = "Eres un asistente que resume textos en espanol en exactamente 3 viñetas claras."
+                        user_msg = f"Resume el siguiente texto en 3 puntos clave:\n\n{ocr_text}"
+                    elif task == "Traducir al ingles":
+                        system_msg = "Eres un traductor profesional de espanol a ingles. Mantienes el sentido y el tono."
+                        user_msg = f"Traduce al ingles el siguiente texto:\n\n{ocr_text}"
+                    elif task == "Identificar las entidades principales":
+                        system_msg = "Eres un extractor de informacion. Devuelves personas, lugares, organizaciones y fechas en formato de lista."
+                        user_msg = f"Extrae las entidades principales del siguiente texto:\n\n{ocr_text}"
+                    else:
+                        system_msg = "Eres un profesor que explica textos en espanol usando lenguaje sencillo."
+                        user_msg = f"Explica en terminos sencillos el siguiente texto:\n\n{ocr_text}"
 
-                with st.spinner("Consultando GROQ..."):
-                    try:
+                    with st.spinner("Consultando GROQ..."):
                         resp = client.chat.completions.create(
                             model=groq_model,
                             messages=[
@@ -164,13 +172,14 @@ if st.button("🧠 Analizar texto"):
                         st.markdown("### ✅ Respuesta del modelo (GROQ)")
                         st.markdown(answer)
                         st.session_state["last_llm_answer"] = answer
-                    except Exception as e:
-                        st.error(f"Ocurrio un error al llamar a GROQ: {e}")
+                except Exception as e:
+                    st.error(f"❌ Error al llamar a GROQ: {str(e)}")
+                    st.info("Asegúrate de que GROQ_API_KEY es válida en los Secrets.")
 
         # ========== HUGGING FACE ==========
         else:
             if not HF_API_KEY:
-                st.error("❌ No se encontro la clave de Hugging Face en el .env")
+                st.error("❌ No se encontro HUGGINGFACE_API_KEY. Verifica que este configurada en Secrets.")
             else:
                 st.success("✅ Clave de Hugging Face cargada correctamente")
 
@@ -223,7 +232,7 @@ if st.button("🧠 Analizar texto"):
                         else:
                             st.error(f"❌ Error {response.status_code}: {response.text}")
                     except Exception as e:
-                        st.error(f"Ocurrió un error al llamar a Hugging Face: {e}")
+                        st.error(f"❌ Error al llamar a Hugging Face: {str(e)}")
 
 # mostrar ultima respuesta
 if "last_llm_answer" in st.session_state:
